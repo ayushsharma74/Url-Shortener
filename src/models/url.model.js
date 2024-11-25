@@ -2,7 +2,10 @@ import mongoose, { Schema } from "mongoose";
 
 const urlSchema = new Schema({
     originalUrl: String,
-    shortCode: String,
+    shortCode: {
+        type: String,
+        unique: true
+    },
     visitedCount: {
         type: Number,
         default: 0
