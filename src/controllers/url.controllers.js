@@ -42,6 +42,22 @@ const getOriginalUrl = async (req,res) => {
     }
 }
 
+const generateNewUrl = async (req,res) => {
+    const {shortCode} = req.body
+    const newCode = nanoid(6)
+    const urlData = await Url.findOneAndUpdate({shortCode}, {
+        shortCode: newCode
+    })
+    console.log(urlData);
+    
+    if (!urlData) {
+        return res.status(500).json("Error while fetching the url data")
+    }
+
+    const updatedData = await Url.findById(urlData._id)
+    return res.json(updatedData).status(200)
+}
+
 const getUrlStats = async (req,res) => {
     const {shortCode} = req.params
     const urlData = await Url.findOne({shortCode})
@@ -63,5 +79,6 @@ export {
     shortenUrl,
     getOriginalUrl,
     getUrlStats,
-    deleteShortUrl
+    deleteShortUrl,
+    generateNewUrl
 }
